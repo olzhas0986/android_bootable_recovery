@@ -247,7 +247,7 @@ bool twrpRepacker::Repack_Image_And_Flash(const std::string& Target_Image, const
 	}
 	DataManager::SetProgress(1);
 	TWFunc::removeDir(REPACK_ORIG_DIR, false);
-	if (part->Is_SlotSelect()) {
+	if (!Repack_Options.Single_Slot && part->Is_SlotSelect()) {
 		if (Repack_Options.Type == REPLACE_RAMDISK || Repack_Options.Type == REPLACE_RAMDISK_UNPACKED) {
 			LOGINFO("Switching slots to flash ramdisk to both partitions\n");
 			string Current_Slot = PartitionManager.Get_Active_Slot_Display();
@@ -297,20 +297,22 @@ bool twrpRepacker::Repack_Image_And_Flash(const std::string& Target_Image, const
 	TWFunc::removeDir(REPACK_NEW_DIR, false);
 	if (dest_partition == "/boot")
 		gui_msg(Msg(msg::kWarning, "repack_overwrite_warning=If device was previously rooted, then root has been overwritten and will need to be reinstalled."));
-	string Current_Slot = PartitionManager.Get_Active_Slot_Display();
-	if (Current_Slot == "A")
-		PartitionManager.Override_Active_Slot("B");
-	else
-		PartitionManager.Override_Active_Slot("A");
+	if (!Repack_Options.Single_Slot) {
+		string Current_Slot = PartitionManager.Get_Active_Slot_Display();
+		if (Current_Slot == "A")
+			PartitionManager.Override_Active_Slot("B");
+		else
+			PartitionManager.Override_Active_Slot("A");
+	}
 	return true;
 }
 
-bool twrpRepacker::Flash_Current_Twrp() {
+bool twrpRepacker::Flash_Current_Twrp(bool single_slot) {
 	// A/B with dedicated recovery partition
 	std::string slot = android::base::GetProperty("ro.boot.slot_suffix", "");
 	if (slot.empty())
 		slot = android::base::GetProperty("ro.boot.slot", "");
-	if (!slot.empty() && PartitionManager.Find_Partition_By_Path("/recovery")) {
+	if (!single_slot && !slot.empty() && PartitionManager.Find_Partition_By_Path("/recovery")) {
 		std::string root,src, dest;
 		std::string dest_partition = "/recovery";
 		root = "/dev/block/bootdevice/by-name" + dest_partition;
@@ -350,6 +352,7 @@ bool twrpRepacker::Flash_Current_Twrp() {
 		PartitionManager.UnMount_By_Path("/vendor", false, MNT_FORCE|MNT_DETACH);
 	}
 	Repack_Options_struct Repack_Options;
+	Repack_Options.Single_Slot = single_slot;
 	Repack_Options.Disable_Verity = false;
 	Repack_Options.Disable_Force_Encrypt = false;
 	Repack_Options.Type = REPLACE_RAMDISK_UNPACKED;

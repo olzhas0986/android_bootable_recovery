@@ -5,6 +5,17 @@
 	<display>Українська</display>
 	<!-- Translated by Bukwaezhka and Jemmini, 2016 -->
 	<resources>
+		<string name="high_speed_flash_chk">Швидке прошивання (лише ROM)</string>
+		<string name="high_speed_readback_chk">Швидке прошивання: перевірка читанням із накопичувача</string>
+		<string name="high_speed_firmware_chk">Швидке прошивання: включити firmware</string>
+		<string name="high_speed_reboot">Після швидкого прошивання перезавантажте рекавері перед установленням іншого ZIP.</string>
+		<string name="high_speed_title">Швидке прошивання</string>
+		<string name="high_speed_reading">Читання payload...</string>
+		<string name="high_speed_writing">Запис образів: {1}...</string>
+		<string name="high_speed_written">Образи записано за {1} с</string>
+		<string name="high_speed_restore_twrp">Відновлення ramdisk TWRP у цільовому образі boot...</string>
+		<string name="high_speed_error">Помилка швидкого прошивання: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />

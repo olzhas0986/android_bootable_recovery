@@ -384,6 +384,13 @@ public:
 	bool Flash_Image(string& path, string& filename);                         // Flashes an image to a selected partition from the partition list
 	bool Restore_Partition(struct PartitionSettings *part_settings);          // Restore the partitions based on type
 	TWAtomicInt stop_backup;
+	bool Reflash_Current_Twrp_For_High_Speed(const std::string& suffix, const std::string& target_node);
+	bool Set_High_Speed_Boot_Slot(const std::string& suffix, bool activate);
+	bool Unmap_High_Speed_Targets(const std::string& suffix, const std::map<std::string, std::string>& paths);
+	bool Rebuild_Logical_Group_For_High_Speed_Flash(const std::string& suffix,
+	    const std::vector<std::pair<std::string, uint64_t>>& partitions,
+	    const std::string& group_name, uint64_t group_size,
+	    std::map<std::string, std::string>* mapped_paths);
 	void Override_Active_Slot(const string& Slot);                            // Override the active slot for repacking
 	void Set_Active_Slot(const string& Slot);                                 // Sets the active slot to A or B
 	string Get_Active_Slot_Suffix();                                          // Returns active slot _a or _b

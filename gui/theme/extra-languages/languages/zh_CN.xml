@@ -4,6 +4,17 @@
 	<display>Chinese (Simplified)</display>
 
 	<resources>
+		<string name="high_speed_flash_chk">高速刷写（仅限 ROM）</string>
+		<string name="high_speed_readback_chk">高速刷写：从存储设备回读校验</string>
+		<string name="high_speed_firmware_chk">高速刷写：包含固件</string>
+		<string name="high_speed_reboot">高速刷写后，请先重启 Recovery 再安装其他 ZIP。</string>
+		<string name="high_speed_title">高速刷写</string>
+		<string name="high_speed_reading">正在读取 payload...</string>
+		<string name="high_speed_writing">正在写入 {1} 个镜像...</string>
+		<string name="high_speed_written">镜像已写入，耗时 {1} 秒</string>
+		<string name="high_speed_restore_twrp">正在将 TWRP ramdisk 恢复到目标 boot 镜像...</string>
+		<string name="high_speed_error">高速刷写失败：{1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="DroidSansFallback.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="DroidSansFallback.ttf" scale="100" />

@@ -4,6 +4,17 @@
 	<display>Slovenian</display>
 
 	<resources>
+		<string name="high_speed_flash_chk">Hitro zapisovanje (samo ROM)</string>
+		<string name="high_speed_readback_chk">Hitro zapisovanje: preveri s ponovnim branjem</string>
+		<string name="high_speed_firmware_chk">Hitro zapisovanje: vključi vdelano programsko opremo</string>
+		<string name="high_speed_reboot">Po hitrem zapisovanju znova zaženite recovery, preden namestite drugo datoteko ZIP.</string>
+		<string name="high_speed_title">Hitro zapisovanje</string>
+		<string name="high_speed_reading">Branje vsebine payload...</string>
+		<string name="high_speed_writing">Zapisovanje slik: {1}...</string>
+		<string name="high_speed_written">Slike zapisane v {1} s</string>
+		<string name="high_speed_restore_twrp">Obnavljanje ramdiska TWRP v ciljno zagonsko sliko...</string>
+		<string name="high_speed_error">Hitro zapisovanje ni uspelo: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />

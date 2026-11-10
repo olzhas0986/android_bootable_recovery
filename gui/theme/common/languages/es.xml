@@ -3,6 +3,17 @@
 <language>
 	<display>Spanish</display>
 	<resources>
+		<string name="high_speed_flash_chk">Flasheo rápido (solo ROM)</string>
+		<string name="high_speed_readback_chk">Flasheo rápido: verificar leyendo el almacenamiento</string>
+		<string name="high_speed_firmware_chk">Flasheo rápido: incluir firmware</string>
+		<string name="high_speed_reboot">Tras el flasheo rápido, reinicia el recovery antes de instalar otro ZIP.</string>
+		<string name="high_speed_title">Flasheo rápido</string>
+		<string name="high_speed_reading">Leyendo payload...</string>
+		<string name="high_speed_writing">Escribiendo {1} imágenes...</string>
+		<string name="high_speed_written">Imágenes escritas en {1} s</string>
+		<string name="high_speed_restore_twrp">Restaurando el ramdisk de TWRP en la imagen boot de destino...</string>
+		<string name="high_speed_error">Error de flasheo rápido: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />

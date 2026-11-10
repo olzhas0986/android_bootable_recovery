@@ -54,6 +54,7 @@
 #include "gui/gui.hpp"
 #include "gui/pages.hpp"
 #include "twinstall.h"
+#include "highspeed.hpp"
 #include "installcommand.h"
 #include "../twrpRepacker.hpp"
 extern "C" {
@@ -240,6 +241,11 @@ static int Run_Update_Binary(const char *path, int* wipe_cache, zip_type ztype) 
 
 int TWinstall_zip(const char* path, int* wipe_cache, bool check_for_digest) {
 	int ret_val, zip_verify = 1, unmount_system = 1, reflashtwrp = 0;
+	if (DataManager::GetIntValue("tw_high_speed_available") &&
+	    DataManager::GetIntValue("tw_high_speed_reboot_required")) {
+		gui_err("high_speed_reboot=Reboot recovery before installing another ZIP after high-speed flash.");
+		return INSTALL_ERROR;
+	}
 
 	gui_msg(Msg("installing_zip=Installing zip file '{1}'")(path));
 	if (strlen(path) < 9 || strncmp(path, "/sideload", 9) != 0) {
@@ -326,31 +332,41 @@ int TWinstall_zip(const char* path, int* wipe_cache, bool check_for_digest) {
 		ZipEntry64 ab_binary_entry;
 		if (FindEntry(Zip, ab_binary_name, &ab_binary_entry) == 0) {
 			LOGINFO("AB zip\n");
-			gui_msg(Msg(msg::kHighlight, "flash_ab_inactive=Flashing A/B zip to inactive slot: {1}")(PartitionManager.Get_Active_Slot_Display()=="A"?"B":"A"));
-			// We need this so backuptool can do its magic
-			bool system_mount_state = PartitionManager.Is_Mounted_By_Path(PartitionManager.Get_Android_Root_Path());
-			bool vendor_mount_state = PartitionManager.Is_Mounted_By_Path("/vendor");
-			PartitionManager.Mount_By_Path(PartitionManager.Get_Android_Root_Path(), false);
-			PartitionManager.Mount_By_Path("/vendor", false);
-			TWFunc::copy_file("/system/bin/sh", "/tmp/sh", 0755);
-			mount("/tmp/sh", "/system/bin/sh", "auto", MS_BIND, NULL);
-			ret_val = Run_Update_Binary(path, wipe_cache, AB_OTA_ZIP_TYPE);
-			umount("/system/bin/sh");
-			unlink("/tmp/sh");
-			if (!vendor_mount_state)
-				PartitionManager.UnMount_By_Path("/vendor", false);
-			if (!system_mount_state)
-				PartitionManager.UnMount_By_Path(PartitionManager.Get_Android_Root_Path(), false);
-			if (android::base::GetBoolProperty("ro.virtual_ab.enabled", false)) {
-				PartitionManager.Unlock_Block_Partitions();
-				PartitionManager.Prepare_All_Super_Volumes();
-				gui_warn("mount_vab_partitions=Devices on super may not mount until rebooting recovery.");
-			}
-			gui_warn("flash_ab_reboot=To flash additional zips, please reboot recovery to switch to the updated slot.");
-			DataManager::GetValue(TW_AUTO_REFLASHTWRP_VAR, reflashtwrp);
-			if (reflashtwrp) {
-			twrpRepacker repacker;
-			repacker.Flash_Current_Twrp();
+			const auto high_speed = DataManager::GetIntValue("tw_high_speed_available")
+				? TryHighSpeedAbInstall(path, Zip) : HighSpeedResult::kNotApplicable;
+			if (high_speed == HighSpeedResult::kAborted) {
+				ret_val = INSTALL_ERROR;
+			} else if (high_speed == HighSpeedResult::kSucceeded) {
+				ret_val = INSTALL_SUCCESS;
+				*wipe_cache = 0;
+				LOGINFO("high-speed: reboot recovery before installing another ZIP.\n");
+			} else {
+				gui_msg(Msg(msg::kHighlight, "flash_ab_inactive=Flashing A/B zip to inactive slot: {1}")(PartitionManager.Get_Active_Slot_Display()=="A"?"B":"A"));
+				// We need this so backuptool can do its magic
+				bool system_mount_state = PartitionManager.Is_Mounted_By_Path(PartitionManager.Get_Android_Root_Path());
+				bool vendor_mount_state = PartitionManager.Is_Mounted_By_Path("/vendor");
+				PartitionManager.Mount_By_Path(PartitionManager.Get_Android_Root_Path(), false);
+				PartitionManager.Mount_By_Path("/vendor", false);
+				TWFunc::copy_file("/system/bin/sh", "/tmp/sh", 0755);
+				mount("/tmp/sh", "/system/bin/sh", "auto", MS_BIND, NULL);
+				ret_val = Run_Update_Binary(path, wipe_cache, AB_OTA_ZIP_TYPE);
+				umount("/system/bin/sh");
+				unlink("/tmp/sh");
+				if (!vendor_mount_state)
+					PartitionManager.UnMount_By_Path("/vendor", false);
+				if (!system_mount_state)
+					PartitionManager.UnMount_By_Path(PartitionManager.Get_Android_Root_Path(), false);
+				if (android::base::GetBoolProperty("ro.virtual_ab.enabled", false)) {
+					PartitionManager.Unlock_Block_Partitions();
+					PartitionManager.Prepare_All_Super_Volumes();
+					gui_warn("mount_vab_partitions=Devices on super may not mount until rebooting recovery.");
+				}
+				gui_warn("flash_ab_reboot=To flash additional zips, please reboot recovery to switch to the updated slot.");
+				DataManager::GetValue(TW_AUTO_REFLASHTWRP_VAR, reflashtwrp);
+				if (reflashtwrp) {
+				twrpRepacker repacker;
+				repacker.Flash_Current_Twrp();
+				}
 			}
 		} else {
 			std::string binary_name("ui.xml");

@@ -4,6 +4,17 @@
 	<display>Deutsch</display>
 
 	<resources>
+		<string name="high_speed_flash_chk">Schnelles Flashen (nur ROM)</string>
+		<string name="high_speed_readback_chk">Schnelles Flashen: durch Zurücklesen prüfen</string>
+		<string name="high_speed_firmware_chk">Schnelles Flashen: Firmware einschließen</string>
+		<string name="high_speed_reboot">Nach dem schnellen Flashen Recovery neu starten, bevor eine weitere ZIP installiert wird.</string>
+		<string name="high_speed_title">Schnelles Flashen</string>
+		<string name="high_speed_reading">Payload wird gelesen...</string>
+		<string name="high_speed_writing">{1} Abbilder werden geschrieben...</string>
+		<string name="high_speed_written">Abbilder in {1} s geschrieben</string>
+		<string name="high_speed_restore_twrp">TWRP-Ramdisk wird im Ziel-Boot-Abbild wiederhergestellt...</string>
+		<string name="high_speed_error">Schnelles Flashen fehlgeschlagen: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
@@ -703,7 +714,7 @@
 		<string name="change_fs_err">Fehler beim Ändern des Dateisystems.</string>
 		<string name="theme_ver_err">Theme-Version inkompatibel zu TWRP-Version. Standard-Theme wird verwendet.</string>
 		<string name="up_a_level">(Übergeordneter Ordner)</string>
-		<string name="install_reboot"version="2">Neustart in %tw_sleep% Sekunden</string>
+		<string name="install_reboot" version="2">Neustart in %tw_sleep% Sekunden</string>
 		<string name="adbbackup_error">Fehler während ADB Backup. Abbruch..."</string>
 		<string name="adbbackup_control_error">Kein Zugriff auf ADB Control Channel</string>
 		<string name="twrp_adbbu_option">--twrp option wird für ADB Backup benötigt</string>

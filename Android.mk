@@ -80,6 +80,20 @@ else
 endif
 
 LOCAL_STATIC_LIBRARIES += libavb libtwrpinstall libminadbd_services libinit libsnapshot_nobinder update_metadata-protos librecovery_utils libhealthhalutils
+
+ifeq ($(TW_HIGHSPEED_FLASHING),true)
+    ifneq ($(TARGET_ARCH),arm64)
+        $(error TW_HIGHSPEED_FLASHING requires an arm64 target)
+    endif
+    ifneq ($(AB_OTA_UPDATER),true)
+        $(error TW_HIGHSPEED_FLASHING requires AB_OTA_UPDATER=true)
+    endif
+    LOCAL_CFLAGS += -DTW_HIGHSPEED_FLASHING
+    LOCAL_SRC_FILES += twrpinstall/highspeed.cpp
+    LOCAL_STATIC_LIBRARIES += libdm twrp_highspeed_metadata
+    TWRP_REQUIRED_MODULES += twrp_otaripper
+endif
+
 LOCAL_SHARED_LIBRARIES += libfs_mgr libhardware android.hardware.boot@1.0 android.hardware.boot@1.1 android.hardware.boot@1.2 libprotobuf-cpp-lite liblp libutils libhidlbase android.hardware.health@2.0
 LOCAL_C_INCLUDES += \
     system/core/fs_mgr/libfs_avb/include/ \

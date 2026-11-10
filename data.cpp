@@ -969,6 +969,15 @@ void DataManager::SetDefaultValues()
 	mConst.SetValue("tw_include_nano", "0");
 #endif
 
+#ifdef TW_HIGHSPEED_FLASHING
+	mConst.SetValue("tw_high_speed_available", TWFunc::Path_Exists("/system/bin/otaripper") ? "1" : "0");
+#else
+	mConst.SetValue("tw_high_speed_available", "0");
+#endif
+	mData.SetValue("tw_high_speed_flash", "0");
+	mData.SetValue("tw_high_speed_readback", "0");
+	mData.SetValue("tw_high_speed_firmware", "0");
+	mData.SetValue("tw_high_speed_reboot_required", "0");
 	mData.SetValue("tw_flash_both_slots", "0");
 	mData.SetValue("tw_is_slot_part", "0");
 

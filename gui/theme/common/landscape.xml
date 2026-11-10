@@ -460,6 +460,27 @@
 				<listitem name="{@skip_digest_zip_chk=Skip Digest check before installing zip}">
 					<data variable="tw_skip_digest_check_zip"/>
 				</listitem>
+				<listitem name="{@high_speed_flash_chk=High speed flash (ROM only)}">
+					<conditions>
+						<condition var1="tw_high_speed_available" var2="1"/>
+						<condition var1="tw_has_boot_slots" var2="1"/>
+					</conditions>
+					<data variable="tw_high_speed_flash"/>
+				</listitem>
+				<listitem name="{@high_speed_readback_chk=High speed: verify by reading storage}">
+					<conditions>
+						<condition var1="tw_high_speed_available" var2="1"/>
+						<condition var1="tw_high_speed_flash" var2="1"/>
+					</conditions>
+					<data variable="tw_high_speed_readback"/>
+				</listitem>
+				<listitem name="{@high_speed_firmware_chk=High speed: include firmware}">
+					<conditions>
+						<condition var1="tw_high_speed_available" var2="1"/>
+						<condition var1="tw_high_speed_flash" var2="1"/>
+					</conditions>
+					<data variable="tw_high_speed_firmware"/>
+				</listitem>
 				<listitem name="{@auto_reflashtwrp_chk=Automatically Reflash TWRP after flashing a ROM}">
 					<conditions>
 						<condition var1="tw_has_boot_slots" var2="1"/>

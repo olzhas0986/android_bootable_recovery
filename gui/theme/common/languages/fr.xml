@@ -2,6 +2,17 @@
 <language>
     <display>Français</display>
     <resources>
+		<string name="high_speed_flash_chk">Flash rapide (ROM uniquement)</string>
+		<string name="high_speed_readback_chk">Flash rapide : vérifier par relecture</string>
+		<string name="high_speed_firmware_chk">Flash rapide : inclure le firmware</string>
+		<string name="high_speed_reboot">Après un flash rapide, redémarrez le recovery avant d’installer un autre ZIP.</string>
+		<string name="high_speed_title">Flash rapide</string>
+		<string name="high_speed_reading">Lecture du payload...</string>
+		<string name="high_speed_writing">Écriture de {1} images...</string>
+		<string name="high_speed_written">Images écrites en {1} s</string>
+		<string name="high_speed_restore_twrp">Restauration du ramdisk TWRP dans l’image boot cible...</string>
+		<string name="high_speed_error">Échec du flash rapide : {1}</string>
+
         <resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
         <resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
         <resource name="font_s" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />

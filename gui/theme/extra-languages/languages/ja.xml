@@ -2,6 +2,17 @@
 <language>
 	<display>Japanese</display>
 	<resources>
+		<string name="high_speed_flash_chk">高速フラッシュ（ROMのみ）</string>
+		<string name="high_speed_readback_chk">高速フラッシュ：ストレージから再読み込みして検証</string>
+		<string name="high_speed_firmware_chk">高速フラッシュ：ファームウェアを含める</string>
+		<string name="high_speed_reboot">高速フラッシュ後に別のZIPをインストールするには、先にリカバリを再起動してください。</string>
+		<string name="high_speed_title">高速フラッシュ</string>
+		<string name="high_speed_reading">ペイロードを読み込み中...</string>
+		<string name="high_speed_writing">{1}個のイメージを書き込み中...</string>
+		<string name="high_speed_written">イメージを{1}秒で書き込みました</string>
+		<string name="high_speed_restore_twrp">対象のbootイメージにTWRPのramdiskを復元中...</string>
+		<string name="high_speed_error">高速フラッシュに失敗しました：{1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource filename="NotoSansCJKjp-Regular.ttf" name="font_l" scale="80" type="fontoverride"/>
 		<resource filename="NotoSansCJKjp-Regular.ttf" name="font_m" scale="85" type="fontoverride"/>

@@ -23,6 +23,9 @@
 #include <sys/vfs.h>
 #include <unistd.h>
 #include <map>
+#include <set>
+#include <algorithm>
+#include <mntent.h>
 #include <vector>
 #include <dirent.h>
 #include <time.h>
@@ -57,10 +60,17 @@
 #include <liblp/liblp.h>
 #include <libgsi/libgsi.h>
 #include <liblp/builder.h>
+#ifdef TW_HIGHSPEED_FLASHING
+#include <libdm/dm.h>
+#endif
 #include <libsnapshot/snapshot.h>
 
 #include "variables.h"
 #include "twcommon.h"
+#include "twrpinstall/include/highspeed.hpp"
+#ifdef TW_HIGHSPEED_FLASHING
+#include "twrpinstall/include/highspeed_layout.hpp"
+#endif
 #include "partitions.hpp"
 #include "data.hpp"
 #include "startupArgs.hpp"
@@ -2994,6 +3004,217 @@ bool TWPartitionManager::Remove_MTP_Storage(unsigned int Storage_ID) {
 #endif
 	return false;
 }
+
+#ifdef TW_HIGHSPEED_FLASHING
+// The recovery-as-boot repacker normally writes both boot slots. Pin its
+// partition object to the validated inactive node and suppress slot hopping.
+bool TWPartitionManager::Reflash_Current_Twrp_For_High_Speed(
+        const std::string& suffix, const std::string& target_node) {
+    const auto booted = android::base::GetProperty("ro.boot.slot_suffix", "");
+    if ((suffix != "_a" && suffix != "_b") ||
+        (booted != "_a" && booted != "_b") || suffix == booted)
+        return false;
+#ifdef BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT
+    return false; // This entry point is specifically recovery-as-boot.
+#else
+    auto* boot = Find_Partition_By_Path("/boot");
+    if (!boot || !boot->SlotSelect || Find_Partition_By_Path("/recovery")) return false;
+    const auto primary = boot->Primary_Block_Device;
+    const auto actual = boot->Actual_Block_Device;
+    const bool slot_select = boot->SlotSelect;
+    boot->Set_Block_Device(target_node);
+    boot->SlotSelect = false;
+    twrpRepacker repacker;
+    const bool result = repacker.Flash_Current_Twrp(true /* single slot */);
+    boot->Primary_Block_Device = primary;
+    boot->Actual_Block_Device = actual;
+    boot->SlotSelect = slot_select;
+    return result;
+#endif
+}
+
+// High-speed installation never infers the booted slot from the mutable GUI slot.
+bool TWPartitionManager::Set_High_Speed_Boot_Slot(const std::string& suffix, bool activate) {
+#ifdef AB_OTA_UPDATER
+    const auto booted = android::base::GetProperty("ro.boot.slot_suffix", "");
+    if ((suffix != "_a" && suffix != "_b") ||
+        (booted != "_a" && booted != "_b") || suffix == booted)
+        return false;
+    auto module = IBootControl::getService();
+    if (!module) return false;
+    auto current = module->getCurrentSlot();
+    const uint32_t booted_number = booted == "_a" ? 0 : 1;
+    if (!current.isOk() || static_cast<uint32_t>(current) != booted_number)
+        return false;
+    const uint32_t target = suffix == "_a" ? 0 : 1;
+    CommandResult result{};
+    auto callback = [&result](const CommandResult& value) { result = value; };
+    auto status = activate ? module->setActiveBootSlot(target, callback)
+                           : module->setSlotAsUnbootable(target, callback);
+    if (!status.isOk() || !result.success) return false;
+    if (activate) {
+        Override_Active_Slot(target == 0 ? "A" : "B");
+        // Refresh fstab paths only after all exclusive target descriptors close.
+        if (Fstab_Processed()) Update_System_Details();
+    }
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool TWPartitionManager::Unmap_High_Speed_Targets(
+        const std::string& suffix, const std::map<std::string, std::string>& paths) {
+    bool success = true;
+    for (const auto& entry : paths) {
+        if (!DestroyLogicalPartition(entry.first + suffix)) {
+            LOGERR("high-speed: cannot release mapping %s%s\n", entry.first.c_str(), suffix.c_str());
+            success = false;
+        }
+    }
+    return success;
+}
+
+bool TWPartitionManager::Rebuild_Logical_Group_For_High_Speed_Flash(
+        const std::string& suffix,
+        const std::vector<std::pair<std::string, uint64_t>>& partitions,
+        const std::string& declared_name, uint64_t group_size,
+        std::map<std::string, std::string>* mapped_paths) {
+    if (!mapped_paths) return false;
+    mapped_paths->clear();
+    const std::string booted = android::base::GetProperty("ro.boot.slot_suffix", "");
+    if ((suffix != "_a" && suffix != "_b") ||
+        (booted != "_a" && booted != "_b") || suffix == booted)
+        return false;
+    auto snapshots = android::snapshot::SnapshotManager::NewForFirstStageMount();
+    if (!snapshots || snapshots->GetUpdateState() != android::snapshot::UpdateState::None) {
+        gui_print("ERROR: Cannot flash while snapshot state is active or unreadable.\n");
+        return false;
+    }
+    if (partitions.empty()) return true;
+    if (declared_name.empty() || !group_size) {
+        gui_print("ERROR: Payload must declare the dynamic partition group and its size.\n");
+        return false;
+    }
+    // Source metadata describes the actual live allocation; inactive metadata
+    // may be stale. The builder retains source allocations on its first attempt.
+    const auto source_slot = android::fs_mgr::SlotNumberForSlotSuffix(booted);
+    const auto target_slot = android::fs_mgr::SlotNumberForSlotSuffix(suffix);
+    const auto super_device = Get_Super_Partition();
+    auto original = android::fs_mgr::ReadMetadata(super_device, target_slot);
+    auto builder = MetadataBuilder::NewForUpdate(android::fs_mgr::PartitionOpener(),
+        super_device, source_slot, target_slot, true /* import source extents */);
+    if (!builder || !original) return false;
+    std::vector<std::string> old_targets, old_sources;
+    bool reclaimed_source = false;
+    std::string reason;
+    if (!PrepareHighSpeedLayout(builder.get(), booted, suffix, declared_name + suffix,
+            group_size, partitions, &old_targets, &old_sources, &reclaimed_source, &reason)) {
+        gui_print("ERROR: Super layout: %s\n", reason.c_str());
+        return false;
+    }
+    auto updated = builder->Export();
+    if (!updated) return false;
+    // Include stale inactive mappings absent from the source metadata as well.
+    for (const auto& part : original->partitions) {
+        const auto name = android::fs_mgr::GetPartitionName(part);
+        if (HighSpeedHasSlotSuffix(name, suffix)) old_targets.push_back(name);
+    }
+    if (reclaimed_source) {
+        LOGINFO("high-speed: Reusing the booted slot's Super space because both ROMs do not fit.\n");
+        LOGINFO("high-speed: Once image writing starts, the previous ROM may no longer boot.\n");
+    }
+    std::set<std::string> release_names(old_targets.begin(), old_targets.end());
+    release_names.insert(old_sources.begin(), old_sources.end());
+    auto& dm = android::dm::DeviceMapper::Instance();
+    std::set<dev_t> release_devices;
+    for (const auto& name : release_names) {
+        if (dm.GetState(name) == android::dm::DmDeviceState::INVALID) continue;
+        std::string path;
+        struct stat st;
+        if (!dm.GetDmDevicePathByName(name, &path) || stat(path.c_str(), &st) != 0 || !S_ISBLK(st.st_mode)) {
+            gui_print("ERROR: Cannot resolve old Super mapping %s.\n", name.c_str());
+            return false;
+        }
+        release_devices.insert(st.st_rdev);
+    }
+    // Read real mounts, including bind mounts; never force or lazily detach a
+    // filesystem that may still have open users when its extents are reused.
+    FILE* mount_file = setmntent("/proc/mounts", "r");
+    if (!mount_file) return false;
+    std::vector<std::pair<std::string, bool>> mounts;
+    while (auto* entry = getmntent(mount_file)) {
+        struct stat st;
+        const bool releasing = stat(entry->mnt_dir, &st) == 0 && release_devices.count(st.st_dev);
+        mounts.emplace_back(entry->mnt_dir, releasing);
+    }
+    const bool mounts_ok = !ferror(mount_file);
+    endmntent(mount_file);
+    std::vector<std::string> unmount_paths;
+    if (!mounts_ok || !HighSpeedUnmountPlan(mounts, &unmount_paths)) {
+        gui_print("ERROR: Cannot safely determine old Super mounts.\n");
+        return false;
+    }
+    for (const auto& path : unmount_paths) {
+        if (umount(path.c_str()) != 0) {
+            gui_print("ERROR: Super filesystem %s is busy (%s).\n", path.c_str(), strerror(errno));
+            return false;
+        }
+    }
+    // Once old dm numbers are released they may be reused for the target.
+    // Invalidate TWRP's stale logical objects before mapping any new devices;
+    // Update_System_Details must not mount a different image via an old dm-N.
+    for (auto* part : Partitions) {
+        if (!part->Is_Super) continue;
+        struct stat st;
+        const bool released = stat(part->Actual_Block_Device.c_str(), &st) == 0 &&
+                              release_devices.count(st.st_rdev);
+        if (!reclaimed_source && !released) continue;
+        part->Set_Block_Device("");
+        part->Alternate_Block_Device.clear();
+        part->Decrypted_Block_Device.clear();
+        part->Can_Be_Mounted = part->Can_Be_Wiped = part->Can_Be_Backed_Up = part->Is_Present = false;
+        part->Size = part->Used = part->Free = part->Backup_Size = 0;
+    }
+    if (!release_names.empty()) DataManager::SetValue("tw_high_speed_reboot_required", 1);
+    for (const auto& name : release_names) {
+        if (dm.GetState(name) != android::dm::DmDeviceState::INVALID &&
+            !DestroyLogicalPartition(name)) {
+            gui_print("ERROR: Super mapping %s is busy; no images were written.\n", name.c_str());
+            return false;
+        }
+    }
+    if (!Set_High_Speed_Boot_Slot(suffix, false)) return false;
+    DataManager::SetValue("tw_high_speed_reboot_required", 1);
+    if (!android::fs_mgr::UpdatePartitionTable(super_device, *updated, target_slot)) {
+        const bool restored = android::fs_mgr::UpdatePartitionTable(super_device, *original, target_slot);
+        LOGERR("high-speed: Super metadata write failed (restore: %s)\n", restored ? "ok" : "failed");
+        return false;
+    }
+    for (const auto& entry : partitions) {
+        android::fs_mgr::CreateLogicalPartitionParams params;
+        params.block_device = super_device;
+        params.metadata_slot = target_slot;
+        params.partition_name = entry.first + suffix;
+        params.force_writable = true;
+        params.timeout_ms = std::chrono::seconds(5);
+        std::string path;
+        if (!android::fs_mgr::CreateLogicalPartition(params, &path)) {
+            gui_print("ERROR: Cannot map target Super partition %s.\n", params.partition_name.c_str());
+            return false;
+        }
+        (*mapped_paths)[entry.first] = path;
+    }
+    return true;
+}
+
+#else
+// libtwrpinstall is built by Soong independently of device Make flags.
+// Leave only this no-op entry point when the engine is not selected.
+HighSpeedResult TryHighSpeedAbInstall(const std::string&, ZipArchiveHandle) {
+    return HighSpeedResult::kNotApplicable;
+}
+#endif
 
 bool TWPartitionManager::Flash_Image(string& path, string& filename) {
 	twrpRepacker repacker;

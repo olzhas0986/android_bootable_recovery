@@ -89,3 +89,16 @@ cc_library_static {
         "librecovery_ui",
     ],
 }
+
+// Independent OTA manifest schema supports full payloads with REPLACE_ZSTD on A12.
+cc_library_static {
+    name: "twrp_highspeed_metadata",
+    recovery_available: true,
+    srcs: ["highspeed_metadata.proto"],
+    proto: {
+        type: "lite",
+        export_proto_headers: true,
+        canonical_path_from_root: false,
+    },
+    shared_libs: ["libprotobuf-cpp-lite"],
+}

@@ -4,6 +4,18 @@
 	<display>Čeština</display>
 	
 	<resources>
+		<string name="high_speed_flash_chk">Rychlé flashování (pouze ROM)</string>
+		<string name="high_speed_readback_chk">Rychlé flashování: ověřit čtením z úložiště</string>
+		<string name="high_speed_firmware_chk">Rychlé flashování: zahrnout firmware</string>
+		<string name="high_speed_reboot">Po rychlém flashování restartujte recovery před instalací dalšího ZIPu.</string>
+		<string name="high_speed_title">Rychlé flashování</string>
+		<string name="high_speed_reading">Čtení payloadu...</string>
+		<string name="high_speed_writing">Zápis obrazů: {1}...</string>
+		<string name="high_speed_written">Obrazy zapsány za {1} s</string>
+		<string name="high_speed_restore_twrp">Obnovování ramdisku TWRP do cílového obrazu boot...</string>
+		<string name="high_speed_error">Rychlé flashování selhalo: {1}</string>
+
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />

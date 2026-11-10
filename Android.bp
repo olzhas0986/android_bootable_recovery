@@ -140,3 +140,22 @@ prebuilt_etc {
     sub_dir: "init/hw",
     recovery: true,
 }
+
+license {
+    name: "twrp_otaripper_license",
+    license_kinds: ["SPDX-license-identifier-Apache-2.0"],
+    license_text: ["prebuilt/otaripper.LICENSE"],
+}
+
+cc_prebuilt_binary {
+    name: "twrp_otaripper",
+    stem: "otaripper",
+    licenses: ["twrp_otaripper_license"],
+    srcs: ["prebuilt/otaripper"],
+    recovery: true,
+    compile_multilib: "64",
+    enabled: false,
+    arch: { arm64: { enabled: true } },
+    strip: { none: true },
+    check_elf_files: false,
+}

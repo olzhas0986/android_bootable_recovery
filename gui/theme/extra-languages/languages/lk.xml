@@ -2,6 +2,17 @@
 <language>
 	<display>Sinhala (Sri Lanka)</display>
 	<resources>
+		<string name="high_speed_flash_chk">වේගවත් ෆ්ලෑෂ් කිරීම (ROM සඳහා පමණි)</string>
+		<string name="high_speed_readback_chk">වේගවත් ෆ්ලෑෂ්: ගබඩාවෙන් නැවත කියවා තහවුරු කරන්න</string>
+		<string name="high_speed_firmware_chk">වේගවත් ෆ්ලෑෂ්: firmware ඇතුළත් කරන්න</string>
+		<string name="high_speed_reboot">වේගවත් ෆ්ලෑෂ් කිරීමෙන් පසු වෙනත් ZIP එකක් ස්ථාපනය කිරීමට පෙර recovery නැවත ආරම්භ කරන්න.</string>
+		<string name="high_speed_title">වේගවත් ෆ්ලෑෂ් කිරීම</string>
+		<string name="high_speed_reading">payload කියවමින්...</string>
+		<string name="high_speed_writing">ඉමේජ් {1} ක් ලියමින්...</string>
+		<string name="high_speed_written">ඉමේජ් ලිවීමට තත්පර {1} ක් ගත විය</string>
+		<string name="high_speed_restore_twrp">ඉලක්ක boot ඉමේජයට TWRP ramdisk ප්‍රතිස්ථාපනය කරමින්...</string>
+		<string name="high_speed_error">වේගවත් ෆ්ලෑෂ් කිරීම අසාර්ථකයි: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource filename="Sinhala.ttf" name="font_l" scale="90" type="fontoverride"/>
 		<resource filename="Sinhala.ttf" name="font_m" scale="80" type="fontoverride"/>

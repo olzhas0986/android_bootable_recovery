@@ -3,6 +3,17 @@
 <language>
 	<display>Slovak</display>
 	<resources>
+		<string name="high_speed_flash_chk">Rýchle flashovanie (iba ROM)</string>
+		<string name="high_speed_readback_chk">Rýchle flashovanie: overiť čítaním z úložiska</string>
+		<string name="high_speed_firmware_chk">Rýchle flashovanie: zahrnúť firmvér</string>
+		<string name="high_speed_reboot">Po rýchlom flashovaní reštartujte recovery pred inštaláciou ďalšieho ZIPu.</string>
+		<string name="high_speed_title">Rýchle flashovanie</string>
+		<string name="high_speed_reading">Čítanie payloadu...</string>
+		<string name="high_speed_writing">Zápis obrazov: {1}...</string>
+		<string name="high_speed_written">Obrazy zapísané za {1} s</string>
+		<string name="high_speed_restore_twrp">Obnovovanie ramdisku TWRP do cieľového obrazu boot...</string>
+		<string name="high_speed_error">Rýchle flashovanie zlyhalo: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />

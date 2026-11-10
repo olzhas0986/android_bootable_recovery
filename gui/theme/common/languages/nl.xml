@@ -2,6 +2,17 @@
 <language>
 	<display>Nederlands</display>
 	<resources>
+		<string name="high_speed_flash_chk">Snel flashen (alleen ROM)</string>
+		<string name="high_speed_readback_chk">Snel flashen: controleren door teruglezen</string>
+		<string name="high_speed_firmware_chk">Snel flashen: firmware meenemen</string>
+		<string name="high_speed_reboot">Herstart recovery na snel flashen voordat je een andere ZIP installeert.</string>
+		<string name="high_speed_title">Snel flashen</string>
+		<string name="high_speed_reading">Payload lezen...</string>
+		<string name="high_speed_writing">{1} images schrijven...</string>
+		<string name="high_speed_written">Images geschreven in {1} s</string>
+		<string name="high_speed_restore_twrp">TWRP-ramdisk herstellen in de doelbootimage...</string>
+		<string name="high_speed_error">Snel flashen mislukt: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource filename="RobotoCondensed-Regular.ttf" name="font_l" scale="100" type="fontoverride"/>
 		<resource filename="RobotoCondensed-Regular.ttf" name="font_m" scale="100" type="fontoverride"/>

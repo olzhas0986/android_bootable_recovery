@@ -4,6 +4,17 @@
 	<!-- Translated by Jemmini; modified by agur4ik, SevenMaxs, S-trace 2017, f2065 -->
 
 	<resources>
+		<string name="high_speed_flash_chk">Быстрая прошивка (только ROM)</string>
+		<string name="high_speed_readback_chk">Быстрая прошивка: проверка чтением с накопителя</string>
+		<string name="high_speed_firmware_chk">Быстрая прошивка: включить firmware</string>
+		<string name="high_speed_reboot">После быстрой прошивки перезагрузите рекавери перед установкой другого ZIP.</string>
+		<string name="high_speed_title">Быстрая прошивка</string>
+		<string name="high_speed_reading">Чтение payload...</string>
+		<string name="high_speed_writing">Запись образов: {1}...</string>
+		<string name="high_speed_written">Образы записаны за {1} с</string>
+		<string name="high_speed_restore_twrp">Восстановление ramdisk TWRP в целевом образе boot...</string>
+		<string name="high_speed_error">Ошибка быстрой прошивки: {1}</string>
+
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource filename="RobotoCondensed-Regular.ttf" name="font_l" scale="90" type="fontoverride"/>
 		<resource filename="RobotoCondensed-Regular.ttf" name="font_m" scale="90" type="fontoverride"/>

@@ -4,6 +4,17 @@
 	<display>Indonesia</display>
 
 	<resources>
+		<string name="high_speed_flash_chk">Flash cepat (hanya ROM)</string>
+		<string name="high_speed_readback_chk">Flash cepat: verifikasi dengan membaca penyimpanan</string>
+		<string name="high_speed_firmware_chk">Flash cepat: sertakan firmware</string>
+		<string name="high_speed_reboot">Setelah flash cepat, mulai ulang recovery sebelum memasang ZIP lain.</string>
+		<string name="high_speed_title">Flash cepat</string>
+		<string name="high_speed_reading">Membaca payload...</string>
+		<string name="high_speed_writing">Menulis {1} image...</string>
+		<string name="high_speed_written">Image ditulis dalam {1} detik</string>
+		<string name="high_speed_restore_twrp">Memulihkan ramdisk TWRP ke image boot tujuan...</string>
+		<string name="high_speed_error">Flash cepat gagal: {1}</string>
+
 		<!-- Penggantian font - hanya ubah ini jika bahasa Anda memerlukan karakter khusus -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />

@@ -2,6 +2,17 @@
 <language>
     <display>Ελληνικά</display>
     <resources>
+		<string name="high_speed_flash_chk">Γρήγορη εγκατάσταση (μόνο ROM)</string>
+		<string name="high_speed_readback_chk">Γρήγορη εγκατάσταση: επαλήθευση με ανάγνωση</string>
+		<string name="high_speed_firmware_chk">Γρήγορη εγκατάσταση: συμπερίληψη firmware</string>
+		<string name="high_speed_reboot">Μετά τη γρήγορη εγκατάσταση, επανεκκινήστε το recovery πριν εγκαταστήσετε άλλο ZIP.</string>
+		<string name="high_speed_title">Γρήγορη εγκατάσταση</string>
+		<string name="high_speed_reading">Ανάγνωση payload...</string>
+		<string name="high_speed_writing">Εγγραφή {1} εικόνων...</string>
+		<string name="high_speed_written">Οι εικόνες γράφτηκαν σε {1} δευτ.</string>
+		<string name="high_speed_restore_twrp">Επαναφορά του ramdisk του TWRP στην εικόνα boot προορισμού...</string>
+		<string name="high_speed_error">Η γρήγορη εγκατάσταση απέτυχε: {1}</string>
+
         <resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
         <resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
         <resource name="font_s" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
