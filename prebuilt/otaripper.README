@@ -1,0 +1,12 @@
+otaripper
+=========
+
+Static ARM64 payload extractor used by high-speed full OTA flashing
+(TW_HIGHSPEED_FLASHING). Installed to /system/bin/otaripper.
+
+Upstream: https://github.com/syedinsaf/otaripper (Apache-2.0, see otaripper.LICENSE)
+Build:    modified, provides --direct-fd, --readback, --readback-for,
+          --no-open and --strict used by twrpinstall/highspeed.cpp
+SHA-256:  cd3b7433d2d3e1faf6ef077e47813c88a7de1b69ac07f881fac6199428a4b5f4
+
+Update the checksum above whenever the binary is replaced.
