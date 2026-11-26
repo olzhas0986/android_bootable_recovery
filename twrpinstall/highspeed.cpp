@@ -154,10 +154,9 @@ uint64_t ReadBigEndian64(const uint8_t* p) {
 }
 
 // which slot recovery itself booted from -- that slot must never be
-// written. ro.boot.slot_suffix is authoritative (the slot menu can change
-// the *bootloader's* active slot without changing what we booted from);
-// fall back to the manager's notion of the active slot only if the
-// property is missing. returns "A", "B", or "" if it can't be known.
+// written. only ro.boot.slot_suffix is trusted (the slot menu can change
+// the *bootloader's* active slot without changing what we booted from).
+// returns "A", "B", or "" if the property is missing.
 std::string DetermineBootedSlot() {
 	std::string prop = android::base::GetProperty("ro.boot.slot_suffix", "");
 	std::string display = PartitionManager.Get_Active_Slot_Display();
@@ -515,7 +514,9 @@ bool ProbeHighSpeedPayload(const std::string& package_path, ZipArchiveHandle zip
 		any_logical = any_logical || entry.is_logical;
 	if (any_logical) {
 		if (!manifest.has_dynamic_partition_metadata()) {
-			LOGINFO("high-speed probe: payload has no dynamic partition metadata, keeping the device's current group size\n");
+			// the Super rebuild needs the group name and size from the payload
+			HsWhy("payload has no dynamic partition metadata");
+			return false;
 		} else {
 			const twrp_highspeed::DynamicPartitionGroup* chosen = nullptr;
 			for (const auto& entry : *plan) {
