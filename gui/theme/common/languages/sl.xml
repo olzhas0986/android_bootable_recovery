@@ -4,17 +4,6 @@
 	<display>Slovenian</display>
 
 	<resources>
-		<string name="high_speed_flash_chk">Hitro zapisovanje (samo ROM)</string>
-		<string name="high_speed_readback_chk">Hitro zapisovanje: preveri s ponovnim branjem</string>
-		<string name="high_speed_firmware_chk">Hitro zapisovanje: vključi vdelano programsko opremo</string>
-		<string name="high_speed_reboot">Po hitrem zapisovanju znova zaženite recovery, preden namestite drugo datoteko ZIP.</string>
-		<string name="high_speed_title">Hitro zapisovanje</string>
-		<string name="high_speed_reading">Branje vsebine payload...</string>
-		<string name="high_speed_writing">Zapisovanje slik: {1}...</string>
-		<string name="high_speed_written">Slike zapisane v {1} s</string>
-		<string name="high_speed_restore_twrp">Obnavljanje ramdiska TWRP v ciljno zagonsko sliko...</string>
-		<string name="high_speed_error">Hitro zapisovanje ni uspelo: {1}</string>
-
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="90" />
@@ -238,6 +227,16 @@
 		<string name="skip_digest_backup_chk" version="2">Med varnostnim kopiranjem preskoči ustvarjanje razpršila</string>
 		<string name="disable_backup_space_chk" version="2">Onemogoči preverjanje nezasedenega prostora</string>
 		<string name="skip_digest_zip_chk">Pred namestitvijo ZIP-a preskoči preverjanje razpršila</string>
+		<string name="high_speed_flash_chk">Hitro zapisovanje (samo ROM)</string>
+		<string name="high_speed_readback_chk">Hitro zapisovanje: preveri s ponovnim branjem</string>
+		<string name="high_speed_firmware_chk">Hitro zapisovanje: vključi vdelano programsko opremo</string>
+		<string name="high_speed_reboot">Po hitrem zapisovanju znova zaženite recovery, preden namestite drugo datoteko ZIP.</string>
+		<string name="high_speed_title">Hitro zapisovanje</string>
+		<string name="high_speed_reading">Branje vsebine payload...</string>
+		<string name="high_speed_writing">Zapisovanje slik: {1}...</string>
+		<string name="high_speed_written">Slike zapisane v {1} s</string>
+		<string name="high_speed_restore_twrp">Obnavljanje ramdiska TWRP v ciljno zagonsko sliko...</string>
+		<string name="high_speed_error">Hitro zapisovanje ni uspelo: {1}</string>
 		<string name="current_boot_slot">Trenutno polje: %tw_active_slot%</string>
 		<string name="boot_slot_a">Polje A</string>
 		<string name="boot_slot_b">Polje B</string>

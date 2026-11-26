@@ -4,17 +4,6 @@
 	<display>Português</display>
 
 	<resources>
-		<string name="high_speed_flash_chk">Flash rápido (apenas ROM)</string>
-		<string name="high_speed_readback_chk">Flash rápido: verificar relendo o armazenamento</string>
-		<string name="high_speed_firmware_chk">Flash rápido: incluir firmware</string>
-		<string name="high_speed_reboot">Após o flash rápido, reinicie o recovery antes de instalar outro ZIP.</string>
-		<string name="high_speed_title">Flash rápido</string>
-		<string name="high_speed_reading">A ler o payload...</string>
-		<string name="high_speed_writing">A gravar {1} imagens...</string>
-		<string name="high_speed_written">Imagens gravadas em {1} s</string>
-		<string name="high_speed_restore_twrp">A restaurar o ramdisk do TWRP na imagem boot de destino...</string>
-		<string name="high_speed_error">Falha no flash rápido: {1}</string>
-
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
@@ -713,5 +702,15 @@
 		<string name="include_kernel_log">Incluir log do Kernel</string>
 		<string name="sha2_chk">Usar SHA2 para fazer hash</string>
 		<string name="unable_set_boot_slot">Erro ao alterar o slot do bootloader para {1}</string>
+		<string name="high_speed_flash_chk">Flash rápido (apenas ROM)</string>
+		<string name="high_speed_readback_chk">Flash rápido: verificar relendo o armazenamento</string>
+		<string name="high_speed_firmware_chk">Flash rápido: incluir firmware</string>
+		<string name="high_speed_reboot">Após o flash rápido, reinicie o recovery antes de instalar outro ZIP.</string>
+		<string name="high_speed_title">Flash rápido</string>
+		<string name="high_speed_reading">A ler o payload...</string>
+		<string name="high_speed_writing">A gravar {1} imagens...</string>
+		<string name="high_speed_written">Imagens gravadas em {1} s</string>
+		<string name="high_speed_restore_twrp">A restaurar o ramdisk do TWRP na imagem boot de destino...</string>
+		<string name="high_speed_error">Falha no flash rápido: {1}</string>
 	</resources>
 </language>

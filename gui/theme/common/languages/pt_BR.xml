@@ -3,17 +3,6 @@
 <language>
 	<display>Portuguese (Brazilian)</display>
 	<resources>
-		<string name="high_speed_flash_chk">Flash rápido (somente ROM)</string>
-		<string name="high_speed_readback_chk">Flash rápido: verificar relendo o armazenamento</string>
-		<string name="high_speed_firmware_chk">Flash rápido: incluir firmware</string>
-		<string name="high_speed_reboot">Após o flash rápido, reinicie o recovery antes de instalar outro ZIP.</string>
-		<string name="high_speed_title">Flash rápido</string>
-		<string name="high_speed_reading">Lendo payload...</string>
-		<string name="high_speed_writing">Gravando {1} imagens...</string>
-		<string name="high_speed_written">Imagens gravadas em {1} s</string>
-		<string name="high_speed_restore_twrp">Restaurando o ramdisk do TWRP na imagem boot de destino...</string>
-		<string name="high_speed_error">Falha no flash rápido: {1}</string>
-
 		<!-- Font overrides - only change these if your language requires special characters -->
 		<resource name="font_l" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
 		<resource name="font_m" type="fontoverride" filename="RobotoCondensed-Regular.ttf" scale="100" />
@@ -624,5 +613,15 @@
 		<string name="cancel_sideload">Cancelamento de sideload ADB...</string>
 		<string name="change_fs_err">Sistema de arquivo erro em mudança.</string>
 		<string name="theme_ver_err">Versão personalizada do tema não coincide com a versão TWRP. Usando o tema conservado em estoque.</string>
+		<string name="high_speed_flash_chk">Flash rápido (somente ROM)</string>
+		<string name="high_speed_readback_chk">Flash rápido: verificar relendo o armazenamento</string>
+		<string name="high_speed_firmware_chk">Flash rápido: incluir firmware</string>
+		<string name="high_speed_reboot">Após o flash rápido, reinicie o recovery antes de instalar outro ZIP.</string>
+		<string name="high_speed_title">Flash rápido</string>
+		<string name="high_speed_reading">Lendo payload...</string>
+		<string name="high_speed_writing">Gravando {1} imagens...</string>
+		<string name="high_speed_written">Imagens gravadas em {1} s</string>
+		<string name="high_speed_restore_twrp">Restaurando o ramdisk do TWRP na imagem boot de destino...</string>
+		<string name="high_speed_error">Falha no flash rápido: {1}</string>
 	</resources>
 </language>

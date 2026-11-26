@@ -243,7 +243,7 @@ int TWinstall_zip(const char* path, int* wipe_cache, bool check_for_digest) {
 	int ret_val, zip_verify = 1, unmount_system = 1, reflashtwrp = 0;
 	if (DataManager::GetIntValue("tw_high_speed_available") &&
 	    DataManager::GetIntValue("tw_high_speed_reboot_required")) {
-		gui_err("high_speed_reboot=Reboot recovery before installing another ZIP after high-speed flash.");
+		gui_err("high_speed_reboot=Reboot recovery before installing another zip after a fast install.");
 		return INSTALL_ERROR;
 	}
 

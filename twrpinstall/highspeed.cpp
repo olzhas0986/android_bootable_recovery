@@ -69,7 +69,7 @@ std::string g_hs_reason;
 void HsWhy(const std::string& why) { g_hs_reason = why; }
 void HsSay(Message text) { gui_msg(text); }
 void HsLog(const std::string& text) { LOGINFO("high-speed: %s\n", text.c_str()); }
-void HsFail(const std::string& what) { gui_msg(Msg(msg::kError, "high_speed_error=High speed flash failed: {1}")(what)); }
+void HsFail(const std::string& what) { gui_msg(Msg(msg::kError, "high_speed_error=Fast install failed: {1}")(what)); }
 
 std::string HsSize(uint64_t bytes) {
 	char buf[32];
@@ -612,8 +612,8 @@ HighSpeedResult TryHighSpeedAbInstall(const std::string& package, ZipArchiveHand
 		return HighSpeedResult::kAborted;
 	}
 
-	HsSay(Msg("high_speed_title=High speed flash"));
-	HsSay(Msg("high_speed_reading=Reading payload..."));
+	HsSay(Msg("high_speed_title=Fast A/B ROM install"));
+	HsSay(Msg("high_speed_reading=Reading package..."));
 	std::vector<HighSpeedPartitionPlan> plan;
 	HighSpeedGroupSpec group_spec;
 	std::vector<std::string> skipped_firmware;
@@ -1012,7 +1012,7 @@ HighSpeedResult TryHighSpeedAbInstall(const std::string& package, ZipArchiveHand
 	}
 	mapped_paths.clear();
 	if (reflash_twrp) {
-		HsSay(Msg("high_speed_restore_twrp=Restoring TWRP ramdisk to the target boot image..."));
+		HsSay(Msg("high_speed_restore_twrp=Installing TWRP to the new slot..."));
 		if (!PartitionManager.Reflash_Current_Twrp_For_High_Speed(target_suffix, nodes.at("boot"))) {
 			HsFail("target ramdisk repack failed; target slot remains unbootable");
 			return HighSpeedResult::kAborted;
